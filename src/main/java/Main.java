@@ -4,22 +4,22 @@ import entity.PersonModel;
 
 public class Main {
     public static void main(String[] args) {
-        AnimalModel cat = new AnimalModel.Builder()
-                .setSpecies("Cat")
-                .setEyeColor("Green")
-                .setHasFur(true)
+        AnimalModel cat = AnimalModel.builder()
+                .species("Cat")
+                .eyeColor("Green")
+                .hasFur(true)
                 .build();
 
-        BarrelModel waterBarrel = new BarrelModel.Builder()
-                .setVolume(50.0)
-                .setStoredMaterial("Water")
-                .setMaterial("Wood")
+        BarrelModel waterBarrel = BarrelModel.builder()
+                .volume(50.0)
+                .storedMaterial("Water")
+                .material("Wood")
                 .build();
 
-        PersonModel person = new PersonModel.Builder()
-                .setGender("Male")
-                .setAge(30)
-                .setLastName("Smith")
+        PersonModel person = PersonModel.builder()
+                .gender("Male")
+                .age(30)
+                .lastName("Smith")
                 .build();
 
         System.out.println(cat);
