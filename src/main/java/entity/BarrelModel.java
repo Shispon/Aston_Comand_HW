@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BarrelModel {
+public class BarrelModel extends ExternalizableObject {
     private double volume;           // Объем
     private String storedMaterial;   // Хранимый материал
     private String material;         // Материал изготовления
