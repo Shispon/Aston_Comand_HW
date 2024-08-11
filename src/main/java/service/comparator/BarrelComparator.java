@@ -14,6 +14,5 @@ public class BarrelComparator implements Comparator<BarrelModel> {
         result = o1.getMaterial().compareTo(o2.getMaterial());
         if (result != 0) return result;
         return Double.compare(o1.getVolume(), o2.getVolume());
-//        return o1.getVolume() > o2.getVolume() ? 1 : (o1.getVolume() == o2.getVolume()) ? 1 : -1;
     }
 }

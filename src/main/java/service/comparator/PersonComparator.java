@@ -1,6 +1,5 @@
 package service.comparator;
 
-import entity.BarrelModel;
 import entity.PersonModel;
 
 import java.util.Comparator;
