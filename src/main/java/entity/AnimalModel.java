@@ -13,4 +13,5 @@ public class AnimalModel extends ExternalizableObject {
     private String species;  // Вид
     private String eyeColor; // Цвет глаз
     private boolean hasFur;  // Наличие шерсти
+
 }

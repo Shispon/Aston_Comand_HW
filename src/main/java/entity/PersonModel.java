@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PersonModel extends ExternalizableObject {
+    private String lastName; // Фамилия
     private String gender;   // Пол
     private int age;         // Возраст
-    private String lastName; // Фамилия
 }
