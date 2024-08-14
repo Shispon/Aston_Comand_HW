@@ -22,7 +22,6 @@ public abstract class ExternalizableObject implements Externalizable {
             var fields = this.getClass().getDeclaredFields();
             for (int i=0; i< fields.length;i++) {
                 var f = fields[i];
-                f.setAccessible(true);
                 Object value = f.get(this);
                 String formattedValue = value.toString();
                 String data = "\n" + f.getName() + ": " + formattedValue;
