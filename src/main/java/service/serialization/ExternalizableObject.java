@@ -1,4 +1,4 @@
-package entity;
+package service.serialization;
 
 import java.io.Externalizable;
 import java.io.IOException;
