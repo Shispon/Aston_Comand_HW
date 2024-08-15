@@ -4,13 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import service.serialization.ExternalizableObject;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AnimalModel extends ExternalizableObject {
+public class AnimalModel {
     private String species;  // Вид
     private String eyeColor; // Цвет глаз
     private boolean hasFur;  // Наличие шерсти

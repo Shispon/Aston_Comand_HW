@@ -1,31 +1,48 @@
 package service.serialization;
 
+import com.google.gson.reflect.TypeToken;
 import lombok.SneakyThrows;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
+import java.lang.reflect.Type;
 
 public class RandomSerialization<T> {
 
-    @SneakyThrows
-    public List<T> GetRandomObjects(int count){
+    private final Hashtable<String, String[]> propertyVariations;
+
+    public RandomSerialization(Hashtable<String,String[]> propertyVariations) {
+
+        this.propertyVariations = propertyVariations;
+    }
+    
+    /**
+     * @param count количество объектов для создания
+     * @return список созданных объектов
+     */
+    public List<T> GetRandomObjects(int count, Class type)
+            throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
+        if(count <= 0)
+            throw new IllegalArgumentException("count must be greater than 0");
+
         Random rand = new Random();
         List<T> list = new ArrayList<T>(count);
-        var type = ((ParameterizedType) this.getClass()
-            .getGenericSuperclass()).getActualTypeArguments()[0].getClass();
         var fields = type.getDeclaredFields();
 
         for(int i = 0; i < count; i++){
             T obj = (T)type.getConstructor().newInstance();
-            try {
                 for (var f : fields) {
                     f.setAccessible(true);
                     switch(f.getType().getName()){
                         case "java.lang.String":
-                            f.set(obj, java.util.UUID.randomUUID().toString());
+                            var variations = this.propertyVariations.get(f.getName());
+                            f.set(obj, variations[rand.nextInt(variations.length)]);
                             break;
                         case "int":
                         case "Integer":
@@ -49,9 +66,7 @@ public class RandomSerialization<T> {
                             break;
                     }
                 }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+
             list.add(obj);
         }
 

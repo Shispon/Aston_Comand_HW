@@ -1,1 +1,0 @@
-[{"species":"Cat","eyeColor":"Green","hasFur":true,"serialVersionUID":6093555241748864964},{"species":"Dog","eyeColor":"Brown","hasFur":true,"serialVersionUID":8093247405806119361},{"species":"Axolotl","eyeColor":"Gray","hasFur":false,"serialVersionUID":-9060060033364893795}]
