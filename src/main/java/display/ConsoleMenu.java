@@ -7,9 +7,9 @@ public class ConsoleMenu {
 
     public void start() {
         Menu mainMenu = new Menu.Builder("Главное меню")
-                .addItem("Ввод данных вручную", () -> option1Menu())
-                .addItem("Ввод случайных данных", () -> option2Menu())
-                .addItem("Ввод данных из файла", () -> option3Menu())
+                .addItem("Ввод данных вручную", ConsoleMenu::option1Menu)
+                .addItem("Ввод случайных данных", ConsoleMenu::option2Menu)
+                .addItem("Ввод данных из файла", ConsoleMenu::option3Menu)
                 .addItem("Выход", () -> System.exit(0))
                 .buildMenu();
 
@@ -27,8 +27,8 @@ public class ConsoleMenu {
 
     private static void option1Menu() {
         Menu option1Menu = new Menu.Builder("Меню проебразований")
-                .addItem("Сортировка данных", () -> System.out.println("Вы выбрали Подопцию 1.1"))
-                .addItem("Поиск элемента", () -> System.out.println("Вы выбрали Подопцию 1.2"))
+                .addItem("Сортировка данных", MenuOperationPool::manualInputSorting)
+                .addItem("Поиск элемента", MenuOperationPool::manualInputSearch)
                 .buildMenu();
 
         navigateMenu(option1Menu);
@@ -36,8 +36,8 @@ public class ConsoleMenu {
 
     private static void option2Menu() {
         Menu option2Menu = new Menu.Builder("Меню проебразований")
-                .addItem("Сортировка данных", () -> System.out.println("Вы выбрали Подопцию 2.1"))
-                .addItem("Поиск элемента", () -> System.out.println("Вы выбрали Подопцию 2.2"))
+                .addItem("Сортировка данных", MenuOperationPool::randomInputSorting)
+                .addItem("Поиск элемента", MenuOperationPool::randomInputSearch)
                 .buildMenu();
 
         navigateMenu(option2Menu);
@@ -45,8 +45,8 @@ public class ConsoleMenu {
 
     private static void option3Menu() {
         Menu option2Menu = new Menu.Builder("Меню проебразований")
-                .addItem("Сортировка данных", () -> System.out.println("Вы выбрали Подопцию 3.1"))
-                .addItem("Поиск элемента", () -> System.out.println("Вы выбрали Подопцию 3.2"))
+                .addItem("Сортировка данных", MenuOperationPool::fileInputSorting)
+                .addItem("Поиск элемента", MenuOperationPool::fileInputSearch)
                 .buildMenu();
 
         navigateMenu(option2Menu);
