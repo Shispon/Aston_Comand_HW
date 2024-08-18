@@ -14,12 +14,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Репозиторий для работы с коллекцией баррелей.
+ * Предоставляет функциональность для сортировки, поиска, добавления и загрузки баррелей.
+ */
 public class BarrelRepository {
+
     private final List<BarrelModel> barrelList = new ArrayList<>();
     private final ConsoleSerialization<BarrelModel> consoleSerialization;
     private final FileSerialization<BarrelModel> fileSerialization;
     private final RandomSerialization<BarrelModel> randomSerialization;
 
+    /**
+     * Конструктор класса {@code BarrelRepository}.
+     *
+     * @param consoleSerialization объект для сериализации в консоль
+     * @param fileSerialization объект для сериализации в файл
+     * @param randomSerialization объект для случайной сериализации
+     */
     public BarrelRepository(ConsoleSerialization<BarrelModel> consoleSerialization,
                             FileSerialization<BarrelModel> fileSerialization,
                             RandomSerialization<BarrelModel> randomSerialization) {
@@ -28,14 +40,36 @@ public class BarrelRepository {
         this.randomSerialization = randomSerialization;
     }
 
+    /**
+     * Сортирует список баррелей с использованием стандартной сортировки.
+     */
     public void sortedBarrelList() {
         SortingService.insertionSort(barrelList, Comparators.barrelComparator());
     }
 
+    /**
+     * Специально сортирует список баррелей, где сортируются только те баррели,
+     * объем которых является четным, а затем возвращаются в их исходные позиции.
+     */
+    public void specialSortedBarrelList() {
+        SortingService.specialSort(barrelList, Comparators.barrelComparator(), barrel -> (int) barrel.getVolume());
+    }
+
+    /**
+     * Ищет баррель в списке по указанным критериям.
+     *
+     * @param barrel баррель для поиска
+     * @return {@code true}, если баррель найден, иначе {@code false}
+     */
     public boolean searchBarrel(BarrelModel barrel) {
         return BinarySearchService.search(barrelList, barrel, Comparators.barrelComparator()) != null;
     }
 
+    /**
+     * Добавляет баррель в список на основе ввода с консоли.
+     *
+     * @throws ValidationException если возникла ошибка при валидации данных
+     */
     public void addBarrelByConsole() throws ValidationException {
         Scanner scanner = new Scanner(System.in);
         BarrelModel barrel = new BarrelModel();
@@ -60,16 +94,28 @@ public class BarrelRepository {
         }
     }
 
+    /**
+     * Загружает баррели из файла и обновляет список баррелей.
+     */
     public void getBarrelsFromFile() {
         List<BarrelModel> barrelsFromFile = fileSerialization.GetObjectsFromFile("barrels.json", BarrelModel.class);
         barrelList.clear();
         barrelList.addAll(barrelsFromFile);
     }
 
+    /**
+     * Записывает список баррелей в файл.
+     */
     public void addBarrelsByFile() {
         fileSerialization.WriteObjectsToFile("barrels.json", barrelList);
     }
 
+    /**
+     * Добавляет случайно сгенерированные баррели в список.
+     *
+     * @param count количество баррелей для генерации
+     * @throws RuntimeException если возникает ошибка при генерации случайных баррелей
+     */
     public void addBarrelsByRandom(int count) {
         try {
             List<BarrelModel> randomBarrels = randomSerialization.GetRandomObjects(count, BarrelModel.class);
@@ -79,7 +125,10 @@ public class BarrelRepository {
         }
     }
 
-    public void getAllBarrels () {
+    /**
+     * Выводит все баррели из списка на консоль.
+     */
+    public void getAllBarrels() {
         System.out.println(barrelList);
     }
 }
