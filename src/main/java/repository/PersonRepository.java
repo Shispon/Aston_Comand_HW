@@ -61,8 +61,8 @@ public class PersonRepository {
      * @param person человек для поиска
      * @return {@code true}, если человек найден, иначе {@code false}
      */
-    public boolean searchPerson(PersonModel person) {
-        return BinarySearchService.search(personList, person, Comparators.personComparator()) != null;
+    public PersonModel searchPerson(PersonModel person) {
+        return BinarySearchService.search(personList, person, Comparators.personComparator());
     }
 
     /**

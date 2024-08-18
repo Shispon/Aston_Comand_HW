@@ -61,8 +61,8 @@ public class BarrelRepository {
      * @param barrel баррель для поиска
      * @return {@code true}, если баррель найден, иначе {@code false}
      */
-    public boolean searchBarrel(BarrelModel barrel) {
-        return BinarySearchService.search(barrelList, barrel, Comparators.barrelComparator()) != null;
+    public BarrelModel searchBarrel(BarrelModel barrel) {
+        return BinarySearchService.search(barrelList, barrel, Comparators.barrelComparator());
     }
 
     /**

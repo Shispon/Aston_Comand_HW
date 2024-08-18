@@ -53,8 +53,8 @@ public class AnimalRepository {
      * @param animal объект {@link AnimalModel} для поиска
      * @return {@code true}, если объект найден, иначе {@code false}
      */
-    public boolean searchAnimal(AnimalModel animal) {
-        return BinarySearchService.search(animalList, animal, Comparators.animalComparator()) != null;
+    public AnimalModel searchAnimal(AnimalModel animal) {
+        return BinarySearchService.search(animalList, animal, Comparators.animalComparator());
     }
 
     /**
