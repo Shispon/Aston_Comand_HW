@@ -4,8 +4,10 @@ import entity.PersonModel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import service.Comparators;
 import service.SortingService;
+import service.comparators.AnimalComparator;
+import service.comparators.BarrelComparator;
+import service.comparators.PersonComparator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,10 +16,14 @@ import java.util.List;
 public class SortingServiceTest {
     private List<BarrelModel> barrelList;
     private Comparator<BarrelModel> comparator;
+    private final BarrelComparator barrelComparator = new BarrelComparator();
+    private final AnimalComparator animalComparator = new AnimalComparator();
+    private final PersonComparator personComparator = new PersonComparator();
 
     @Before
     public void setUp() {
-        comparator = Comparators.barrelComparator();
+
+        comparator = barrelComparator.getComparator();
 
         barrelList = new ArrayList<>();
         barrelList.add(new BarrelModel("Water", "Wood", 50.0)); // четный
@@ -67,7 +73,7 @@ public class SortingServiceTest {
                 new AnimalModel("Lion", "Yellow", true),
         };
 
-        SortingService.insertionSort(animalModelList, Comparators.animalComparator());
+        SortingService.insertionSort(animalModelList, animalComparator.getComparator());
 
         Assert.assertArrayEquals(animalModelsExpected, animalModelList.toArray(new AnimalModel[0]));
     }
@@ -86,7 +92,7 @@ public class SortingServiceTest {
                 new PersonModel("Ivanova", "Female", 22),
         };
 
-        SortingService.insertionSort(personModelList, Comparators.personComparator());
+        SortingService.insertionSort(personModelList, personComparator.getComparator());
 
         Assert.assertArrayEquals(personModelsExpected, personModelList.toArray(new PersonModel[0]));
     }
@@ -104,7 +110,7 @@ public class SortingServiceTest {
                 new BarrelModel("Oil", "Steel", 3.0),
         };
 
-        SortingService.insertionSort(barrelModelList, Comparators.barrelComparator());
+        SortingService.insertionSort(barrelModelList, barrelComparator.getComparator());
 
         Assert.assertArrayEquals(barrelModelsExpected, barrelModelList.toArray(new BarrelModel[0]));
     }

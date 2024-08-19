@@ -3,8 +3,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import service.BinarySearchService;
-import service.Comparators;
 import service.SortingService;
+import service.comparators.AnimalComparator;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,7 +17,8 @@ public class BinarySearchImplTest {
 
     @Before
     public void setUp() {
-        comparator = Comparators.animalComparator();
+        AnimalComparator animalComparator = new AnimalComparator();
+        comparator = animalComparator.getComparator();
         List<AnimalModel> list = new ArrayList<>();
         list.add(new AnimalModel("dog", "brown", true));
         list.add(new AnimalModel("cat", "green", true));

@@ -2,8 +2,8 @@ package repository;
 
 import entity.AnimalModel;
 import service.BinarySearchService;
-import service.Comparators;
 import service.SortingService;
+import service.comparators.AnimalComparator;
 import service.serialization.ConsoleSerialization;
 import service.serialization.FileSerialization;
 import service.serialization.RandomSerialization;
@@ -14,55 +14,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Репозиторий для работы с коллекцией животных.
- * Предоставляет функциональность для сортировки, поиска, добавления и загрузки объектов {@link AnimalModel}.
- */
-public class AnimalRepository {
+public class AnimalRepository implements Repository<AnimalModel> {
 
     private final List<AnimalModel> animalList = new ArrayList<>();
     private final ConsoleSerialization<AnimalModel> consoleSerialization;
     private final FileSerialization<AnimalModel> fileSerialization;
     private final RandomSerialization<AnimalModel> randomSerialization;
+    private final AnimalComparator animalComparator;
 
-    /**
-     * Конструктор класса {@code AnimalRepository}.
-     *
-     * @param consoleSerialization объект для сериализации в консоль
-     * @param fileSerialization объект для сериализации в файл
-     * @param randomSerialization объект для случайной сериализации
-     */
     public AnimalRepository(ConsoleSerialization<AnimalModel> consoleSerialization,
                             FileSerialization<AnimalModel> fileSerialization,
-                            RandomSerialization<AnimalModel> randomSerialization) {
+                            RandomSerialization<AnimalModel> randomSerialization,
+                            AnimalComparator animalComparator) {
         this.consoleSerialization = consoleSerialization;
         this.fileSerialization = fileSerialization;
         this.randomSerialization = randomSerialization;
+        this.animalComparator = animalComparator;
     }
 
-    /**
-     * Сортирует список {@link AnimalModel} с использованием стандартной сортировки.
-     */
-    public void sortedAnimalList() {
-        SortingService.insertionSort(animalList, Comparators.animalComparator());
+    @Override
+    public void sortedList() {
+        SortingService.insertionSort(animalList, animalComparator.getComparator());
     }
 
-    /**
-     * Ищет объект {@link AnimalModel} в списке по указанным критериям.
-     *
-     * @param animal объект {@link AnimalModel} для поиска
-     * @return {@code true}, если объект найден, иначе {@code false}
-     */
-    public AnimalModel searchAnimal(AnimalModel animal) {
-        return BinarySearchService.search(animalList, animal, Comparators.animalComparator());
+    @Override
+    public AnimalModel search(AnimalModel animal) {
+        return BinarySearchService.search(animalList, animal, animalComparator.getComparator());
     }
 
-    /**
-     * Добавляет объект {@link AnimalModel} в список на основе ввода с консоли.
-     *
-     * @throws ValidationException если возникла ошибка при валидации данных
-     */
-    public void addAnimalByConsole() throws ValidationException {
+    @Override
+    public void addByConsole() throws ValidationException {
         Scanner scanner = new Scanner(System.in);
         AnimalModel animal = new AnimalModel();
 
@@ -79,7 +60,6 @@ public class AnimalRepository {
             String hasFur = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(animal, "hasFur", hasFur);
 
-            // Добавляем AnimalModel в список
             animalList.add(animal);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -87,29 +67,20 @@ public class AnimalRepository {
         }
     }
 
-    /**
-     * Загружает объекты {@link AnimalModel} из файла и обновляет список животных.
-     */
-    public void getAnimalsFromFile() {
+    @Override
+    public void getFromFile() {
         List<AnimalModel> animalsFromFile = fileSerialization.GetObjectsFromFile("animals.json", AnimalModel.class);
         animalList.clear();
         animalList.addAll(animalsFromFile);
     }
 
-    /**
-     * Записывает список объектов {@link AnimalModel} в файл.
-     */
-    public void addAnimalsByFile() {
+    @Override
+    public void addByFile() {
         fileSerialization.WriteObjectsToFile("animals.json", animalList);
     }
 
-    /**
-     * Добавляет случайно сгенерированные объекты {@link AnimalModel} в список.
-     *
-     * @param count количество объектов для генерации
-     * @throws RuntimeException если возникает ошибка при генерации случайных объектов
-     */
-    public void addAnimalsByRandom(int count) {
+    @Override
+    public void addByRandom(int count) {
         try {
             List<AnimalModel> randomAnimals = randomSerialization.GetRandomObjects(count, AnimalModel.class);
             animalList.addAll(randomAnimals);
@@ -118,10 +89,8 @@ public class AnimalRepository {
         }
     }
 
-    /**
-     * Выводит все объекты {@link AnimalModel} из списка на консоль.
-     */
-    public void getAllAnimals() {
+    @Override
+    public void getAll() {
         System.out.println(animalList);
     }
 }

@@ -2,8 +2,8 @@ package repository;
 
 import entity.PersonModel;
 import service.BinarySearchService;
-import service.Comparators;
 import service.SortingService;
+import service.comparators.PersonComparator;
 import service.serialization.ConsoleSerialization;
 import service.serialization.FileSerialization;
 import service.serialization.RandomSerialization;
@@ -14,63 +14,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * Репозиторий для работы с коллекцией людей.
- * Предоставляет функциональность для сортировки, поиска, добавления и загрузки людей.
- */
-public class PersonRepository {
+public class PersonRepository implements Repository<PersonModel> {
 
     private final List<PersonModel> personList = new ArrayList<>();
     private final ConsoleSerialization<PersonModel> consoleSerialization;
     private final FileSerialization<PersonModel> fileSerialization;
     private final RandomSerialization<PersonModel> randomSerialization;
+    private final PersonComparator personComparator;
 
-    /**
-     * Конструктор класса {@code PersonRepository}.
-     *
-     * @param consoleSerialization объект для сериализации в консоль
-     * @param fileSerialization объект для сериализации в файл
-     * @param randomSerialization объект для случайной сериализации
-     */
     public PersonRepository(ConsoleSerialization<PersonModel> consoleSerialization,
                             FileSerialization<PersonModel> fileSerialization,
-                            RandomSerialization<PersonModel> randomSerialization) {
+                            RandomSerialization<PersonModel> randomSerialization,
+                            PersonComparator personComparator) {
         this.consoleSerialization = consoleSerialization;
         this.fileSerialization = fileSerialization;
         this.randomSerialization = randomSerialization;
+        this.personComparator = personComparator;
     }
 
-    /**
-     * Сортирует список людей с использованием стандартной сортировки.
-     */
-    public void sortedPersonList() {
-        SortingService.insertionSort(personList, Comparators.personComparator());
+    @Override
+    public void sortedList() {
+        SortingService.insertionSort(personList, personComparator.getComparator());
+    }
+    public void specialSortedList() {
+        SortingService.specialSort(personList, personComparator.getComparator(),PersonModel::getAge);
     }
 
-    /**
-     * Специально сортирует список людей, где сортируются только те люди,
-     * возраст которых является четным, а затем возвращаются в их исходные позиции.
-     */
-    public void specialSortedPersonList() {
-        SortingService.specialSort(personList, Comparators.personComparator(), PersonModel::getAge);
+    @Override
+    public PersonModel search(PersonModel person) {
+        return BinarySearchService.search(personList, person, personComparator.getComparator());
     }
 
-    /**
-     * Ищет человека в списке по указанным критериям.
-     *
-     * @param person человек для поиска
-     * @return {@code true}, если человек найден, иначе {@code false}
-     */
-    public PersonModel searchPerson(PersonModel person) {
-        return BinarySearchService.search(personList, person, Comparators.personComparator());
-    }
-
-    /**
-     * Добавляет человека в список на основе ввода с консоли.
-     *
-     * @throws ValidationException если возникла ошибка при валидации данных
-     */
-    public void addPersonByConsole() throws ValidationException {
+    @Override
+    public void addByConsole() throws ValidationException {
         Scanner scanner = new Scanner(System.in);
         PersonModel person = new PersonModel();
 
@@ -87,7 +63,6 @@ public class PersonRepository {
             String age = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(person, "age", age);
 
-            // Добавляем PersonModel в список
             personList.add(person);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -95,29 +70,20 @@ public class PersonRepository {
         }
     }
 
-    /**
-     * Загружает людей из файла и обновляет список людей.
-     */
-    public void getPersonsFromFile() {
+    @Override
+    public void getFromFile() {
         List<PersonModel> personsFromFile = fileSerialization.GetObjectsFromFile("persons.json", PersonModel.class);
         personList.clear();
         personList.addAll(personsFromFile);
     }
 
-    /**
-     * Записывает список людей в файл.
-     */
-    public void addPersonsByFile() {
+    @Override
+    public void addByFile() {
         fileSerialization.WriteObjectsToFile("persons.json", personList);
     }
 
-    /**
-     * Добавляет случайно сгенерированных людей в список.
-     *
-     * @param count количество людей для генерации
-     * @throws RuntimeException если возникает ошибка при генерации случайных людей
-     */
-    public void addPersonsByRandom(int count) {
+    @Override
+    public void addByRandom(int count) {
         try {
             List<PersonModel> randomPersons = randomSerialization.GetRandomObjects(count, PersonModel.class);
             personList.addAll(randomPersons);
@@ -126,10 +92,8 @@ public class PersonRepository {
         }
     }
 
-    /**
-     * Выводит все люди из списка на консоль.
-     */
-    public void getAllPerson() {
+    @Override
+    public void getAll() {
         System.out.println(personList);
     }
 }
