@@ -6,7 +6,6 @@ import service.BinarySearchService;
 import service.Comparators;
 import service.sorting.InsertionSort;
 import service.sorting.SortingService;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -18,7 +17,8 @@ public class BinarySearchImplTest {
 
     @Before
     public void setUp() {
-        comparator = Comparators.animalComparator();
+        AnimalComparator animalComparator = new AnimalComparator();
+        comparator = animalComparator.getComparator();
         List<AnimalModel> list = new ArrayList<>();
         list.add(new AnimalModel("dog", "brown", true));
         list.add(new AnimalModel("cat", "green", true));

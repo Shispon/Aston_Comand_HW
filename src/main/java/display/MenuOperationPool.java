@@ -6,6 +6,9 @@ import entity.PersonModel;
 import repository.AnimalRepository;
 import repository.BarrelRepository;
 import repository.PersonRepository;
+import service.comparators.AnimalComparator;
+import service.comparators.BarrelComparator;
+import service.comparators.PersonComparator;
 import service.serialization.ConsoleSerialization;
 import service.serialization.FileSerialization;
 import service.serialization.RandomSerialization;
@@ -23,17 +26,20 @@ public class MenuOperationPool {
         personRepository = new PersonRepository(
                 new ConsoleSerialization<>(PersonModel.class),
                 new FileSerialization<>(),
-                new RandomSerialization<>()
+                new RandomSerialization<>(),
+                new PersonComparator()
         );
         animalRepository = new AnimalRepository(
                 new ConsoleSerialization<>(AnimalModel.class),
                 new FileSerialization<>(),
-                new RandomSerialization<>()
+                new RandomSerialization<>(),
+                new AnimalComparator()
         );
         barrelRepository = new BarrelRepository(
                 new ConsoleSerialization<>(BarrelModel.class),
                 new FileSerialization<>(),
-                new RandomSerialization<>()
+                new RandomSerialization<>(),
+                new BarrelComparator()
         );
     }
 
@@ -61,7 +67,7 @@ public class MenuOperationPool {
                     handlePersonSearch();
                     break;
                 case 4:
-                    personRepository.getAllPerson();
+                    personRepository.getAll();
                     break;
                 case 0:
                     return;
@@ -86,18 +92,18 @@ public class MenuOperationPool {
             switch (method) {
                 case 1:
                     try {
-                        personRepository.addPersonByConsole();
+                        personRepository.addByConsole();
                     } catch (ValidationException e) {
                         System.out.println("Ошибка ввода: " + e.getMessage());
                     }
                     break;
                 case 2:
-                    personRepository.getPersonsFromFile();
+                    personRepository.getFromFile();
                     break;
                 case 3:
                     System.out.println("Введите количество людей:");
                     int count = scanner.nextInt();
-                    personRepository.addPersonsByRandom(count);
+                    personRepository.addByRandom(count);
                     break;
                 case 0:
                     return;
@@ -120,10 +126,10 @@ public class MenuOperationPool {
 
             switch (method) {
                 case 1:
-                    personRepository.sortedPersonList();
+                    personRepository.sortedList();
                     break;
                 case 2:
-                    personRepository.specialSortedPersonList();
+                    personRepository.specialSortedList();
                     break;
                 case 0:
                     return;
@@ -143,7 +149,7 @@ public class MenuOperationPool {
         int age = scanner.nextInt();
         scanner.nextLine();  // Потребуется для следующего ввода строки
 
-        System.out.println(personRepository.searchPerson(PersonModel.builder().lastName(lastname).gender(gender).age(age).build()));
+        System.out.println(personRepository.search(PersonModel.builder().lastName(lastname).gender(gender).age(age).build()));
     }
 
     public static void handleAnimalActions() {
@@ -170,7 +176,7 @@ public class MenuOperationPool {
                     handleAnimalSearch();
                     break;
                 case 4:
-                    animalRepository.getAllAnimals();
+                    animalRepository.getAll();
                     break;
                 case 0:
                     return;
@@ -195,18 +201,18 @@ public class MenuOperationPool {
             switch (method) {
                 case 1:
                     try {
-                        animalRepository.addAnimalByConsole();
+                        animalRepository.addByConsole();
                     } catch (ValidationException e) {
                         System.out.println("Ошибка ввода: " + e.getMessage());
                     }
                     break;
                 case 2:
-                    animalRepository.getAnimalsFromFile();
+                    animalRepository.getFromFile();
                     break;
                 case 3:
                     System.out.println("Введите количество животных:");
                     int count = scanner.nextInt();
-                    animalRepository.addAnimalsByRandom(count);
+                    animalRepository.addByRandom(count);
                     break;
                 case 0:
                     return;
@@ -228,7 +234,7 @@ public class MenuOperationPool {
 
             switch (method) {
                 case 1:
-                    animalRepository.sortedAnimalList();
+                    animalRepository.sortedList();
                     break;
                 case 0:
                     return;
@@ -248,7 +254,7 @@ public class MenuOperationPool {
         boolean hasFur = scanner.nextBoolean();
         scanner.nextLine();  // Потребуется для следующего ввода строки
 
-        System.out.println(animalRepository.searchAnimal(AnimalModel.builder().species(species).eyeColor(eyecolor).hasFur(hasFur).build()));
+        System.out.println(animalRepository.search(AnimalModel.builder().species(species).eyeColor(eyecolor).hasFur(hasFur).build()));
     }
 
     public static void handleBarrelActions() {
@@ -275,7 +281,7 @@ public class MenuOperationPool {
                     handleBarrelSearch();
                     break;
                 case 4:
-                    barrelRepository.getAllBarrels();
+                    barrelRepository.getAll();
                     break;
                 case 0:
                     return;
@@ -300,18 +306,18 @@ public class MenuOperationPool {
             switch (method) {
                 case 1:
                     try {
-                        barrelRepository.addBarrelByConsole();
+                        barrelRepository.addByConsole();
                     } catch (ValidationException e) {
                         System.out.println("Ошибка ввода: " + e.getMessage());
                     }
                     break;
                 case 2:
-                    barrelRepository.getBarrelsFromFile();
+                    barrelRepository.getFromFile();
                     break;
                 case 3:
                     System.out.println("Введите количество бочек:");
                     int count = scanner.nextInt();
-                    barrelRepository.addBarrelsByRandom(count);
+                    barrelRepository.addByRandom(count);
                     break;
                 case 0:
                     return;
@@ -334,10 +340,10 @@ public class MenuOperationPool {
 
             switch (method) {
                 case 1:
-                    barrelRepository.sortedBarrelList();
+                    barrelRepository.sortedList();
                     break;
                 case 2:
-                    barrelRepository.specialSortedBarrelList();
+                    barrelRepository.specialSortedList();
                     break;
                 case 0:
                     return;
@@ -357,6 +363,6 @@ public class MenuOperationPool {
         double size = scanner.nextDouble();
         scanner.nextLine();  // Потребуется для следующего ввода строки
 
-        System.out.println(barrelRepository.searchBarrel(BarrelModel.builder().storedMaterial(type).material(material).volume(size).build()));
+        System.out.println(barrelRepository.search(BarrelModel.builder().storedMaterial(type).material(material).volume(size).build()));
     }
 }

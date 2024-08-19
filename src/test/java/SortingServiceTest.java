@@ -8,7 +8,6 @@ import service.Comparators;
 import service.sorting.InsertionSort;
 import service.sorting.SortingService;
 import service.sorting.SpecialSort;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,10 +15,14 @@ import java.util.List;
 public class SortingServiceTest {
     private List<BarrelModel> barrelList;
     private Comparator<BarrelModel> comparator;
+    private final BarrelComparator barrelComparator = new BarrelComparator();
+    private final AnimalComparator animalComparator = new AnimalComparator();
+    private final PersonComparator personComparator = new PersonComparator();
 
     @Before
     public void setUp() {
-        comparator = Comparators.barrelComparator();
+
+        comparator = barrelComparator.getComparator();
 
         barrelList = new ArrayList<>();
         barrelList.add(new BarrelModel("Water", "Wood", 50.0)); // четный
