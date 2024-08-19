@@ -13,16 +13,27 @@ import service.serialization.ValidationException;
 import java.util.Scanner;
 
 public class MenuOperationPool {
+    private static  PersonRepository personRepository;
+    private static AnimalRepository animalRepository;
+    private static BarrelRepository barrelRepository;
+    public  MenuOperationPool(ConsoleSerialization<PersonModel> personModelConsoleSerialization,
+                              FileSerialization<PersonModel> personModelFileSerialization,
+                              RandomSerialization<PersonModel> personModelRandomSerialization,
+                              ConsoleSerialization<AnimalModel> animalConsoleSerialization,
+                              FileSerialization<AnimalModel> animalModelFileSerialization,
+                              RandomSerialization<AnimalModel> animalModelRandomSerialization,
+                              ConsoleSerialization<BarrelModel> barrelModelConsoleSerialization,
+                              FileSerialization<BarrelModel> barrelModelFileSerialization,
+                              RandomSerialization<BarrelModel> barrelModelRandomSerialization) {
+        personRepository = new PersonRepository(personModelConsoleSerialization, personModelFileSerialization, personModelRandomSerialization);
+        animalRepository = new AnimalRepository(animalConsoleSerialization, animalModelFileSerialization, animalModelRandomSerialization);
+        barrelRepository = new BarrelRepository(barrelModelConsoleSerialization, barrelModelFileSerialization, barrelModelRandomSerialization);
+    }
     public static void manualInputSorting(int currentDataObjectId) {
         System.out.println("Вы выбрали сортировку данных, введенных вручную");
 
         switch (currentDataObjectId){
             case 1:
-                final ConsoleSerialization<PersonModel> personModelConsoleSerialization = new ConsoleSerialization<>(PersonModel.class);
-                final FileSerialization<PersonModel> personModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<PersonModel> personModelRandomSerialization = new RandomSerialization<>();
-                PersonRepository personRepository = new PersonRepository(personModelConsoleSerialization, personModelFileSerialization, personModelRandomSerialization);
-
                 try {
                     personRepository.addPersonByConsole();
                     personRepository.sortedPersonList();
@@ -32,10 +43,6 @@ public class MenuOperationPool {
                 }
                 break;
             case 2:
-                final ConsoleSerialization<AnimalModel> animalModelConsoleSerialization = new ConsoleSerialization<>(AnimalModel.class);
-                final FileSerialization<AnimalModel> animalModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<AnimalModel> animalModelRandomSerialization = new RandomSerialization<>();
-                AnimalRepository animalRepository = new AnimalRepository(animalModelConsoleSerialization, animalModelFileSerialization, animalModelRandomSerialization);
                 try {
                     animalRepository.addAnimalByConsole();
                     animalRepository.sortedAnimalList();
@@ -64,11 +71,6 @@ public class MenuOperationPool {
         System.out.println("Вы выбрали поиск данных, введенных вручную");
         switch (currentDataObjectId){
             case 1:
-                final ConsoleSerialization<PersonModel> personModelConsoleSerialization = new ConsoleSerialization<>(PersonModel.class);
-                final FileSerialization<PersonModel> personModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<PersonModel> personModelRandomSerialization = new RandomSerialization<>();
-                PersonRepository personRepository = new PersonRepository(personModelConsoleSerialization, personModelFileSerialization, personModelRandomSerialization);
-
                 try {
                     personRepository.addPersonByConsole();
                     personRepository.sortedPersonList();
@@ -88,10 +90,6 @@ public class MenuOperationPool {
                 }
                 break;
             case 2:
-                final ConsoleSerialization<AnimalModel> animalModelConsoleSerialization = new ConsoleSerialization<>(AnimalModel.class);
-                final FileSerialization<AnimalModel> animalModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<AnimalModel> animalModelRandomSerialization = new RandomSerialization<>();
-                AnimalRepository animalRepository = new AnimalRepository(animalModelConsoleSerialization, animalModelFileSerialization, animalModelRandomSerialization);
                 try {
                     animalRepository.addAnimalByConsole();
                     animalRepository.sortedAnimalList();
@@ -111,10 +109,6 @@ public class MenuOperationPool {
                 }
                 break;
             case 3:
-                final ConsoleSerialization<BarrelModel> barrelModelConsoleSerialization = new ConsoleSerialization<>(BarrelModel.class);
-                final FileSerialization<BarrelModel> barrelModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<BarrelModel> barrelModelRandomSerialization = new RandomSerialization<>();
-                BarrelRepository barrelRepository = new BarrelRepository(barrelModelConsoleSerialization, barrelModelFileSerialization, barrelModelRandomSerialization);
                 try {
                     barrelRepository.addBarrelByConsole();
                     barrelRepository.sortedBarrelList();
@@ -133,6 +127,8 @@ public class MenuOperationPool {
                     throw new RuntimeException(e);
                 }
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + currentDataObjectId);
         }
     }
 
@@ -141,11 +137,6 @@ public class MenuOperationPool {
 
         switch (currentDataObjectId){
             case 1:
-                final ConsoleSerialization<PersonModel> personModelConsoleSerialization = new ConsoleSerialization<>(PersonModel.class);
-                final FileSerialization<PersonModel> personModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<PersonModel> personModelRandomSerialization = new RandomSerialization<>();
-                PersonRepository personRepository = new PersonRepository(personModelConsoleSerialization, personModelFileSerialization, personModelRandomSerialization);
-
                 try {
                     personRepository.addPersonByConsole();
                     personRepository.specialSortedPersonList();
@@ -155,23 +146,15 @@ public class MenuOperationPool {
                 }
                 break;
             case 2:
-                final ConsoleSerialization<AnimalModel> animalModelConsoleSerialization = new ConsoleSerialization<>(AnimalModel.class);
-                final FileSerialization<AnimalModel> animalModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<AnimalModel> animalModelRandomSerialization = new RandomSerialization<>();
-                AnimalRepository animalRepository = new AnimalRepository(animalModelConsoleSerialization, animalModelFileSerialization, animalModelRandomSerialization);
                 try {
                     animalRepository.addAnimalByConsole();
-                    System.out.println("Попробуйте позже");;
+                    System.out.println("Попробуйте позже");
                     animalRepository.getAllAnimals();
                 } catch (ValidationException e) {
                     throw new RuntimeException(e);
                 }
                 break;
             case 3:
-                final ConsoleSerialization<BarrelModel> barrelModelConsoleSerialization = new ConsoleSerialization<>(BarrelModel.class);
-                final FileSerialization<BarrelModel> barrelModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<BarrelModel> barrelModelRandomSerialization = new RandomSerialization<>();
-                BarrelRepository barrelRepository = new BarrelRepository(barrelModelConsoleSerialization, barrelModelFileSerialization, barrelModelRandomSerialization);
                 try {
                     barrelRepository.addBarrelByConsole();
                     barrelRepository.specialSortedBarrelList();
@@ -188,11 +171,6 @@ public class MenuOperationPool {
 
         switch (currentDataObjectId){
             case 1:
-                final ConsoleSerialization<PersonModel> personModelConsoleSerialization = new ConsoleSerialization<>(PersonModel.class);
-                final FileSerialization<PersonModel> personModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<PersonModel> personModelRandomSerialization = new RandomSerialization<>();
-                PersonRepository personRepository = new PersonRepository(personModelConsoleSerialization, personModelFileSerialization, personModelRandomSerialization);
-
                 Scanner personScanner = new Scanner(System.in);
                 System.out.println("Введите количество людей");
                 int personCount = personScanner.nextInt();
@@ -203,11 +181,6 @@ public class MenuOperationPool {
                 break;
 
             case 2:
-                final ConsoleSerialization<AnimalModel> animalModelConsoleSerialization = new ConsoleSerialization<>(AnimalModel.class);
-                final FileSerialization<AnimalModel> animalModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<AnimalModel> animalModelRandomSerialization = new RandomSerialization<>();
-                AnimalRepository animalRepository = new AnimalRepository(animalModelConsoleSerialization, animalModelFileSerialization, animalModelRandomSerialization);
-
                 Scanner animalScanner = new Scanner(System.in);
                 System.out.println("Введите количество животных");
                 int animalCount  = animalScanner.nextInt();
@@ -219,11 +192,6 @@ public class MenuOperationPool {
                 break;
 
             case 3:
-                final ConsoleSerialization<BarrelModel> barrelModelConsoleSerialization = new ConsoleSerialization<>(BarrelModel.class);
-                final FileSerialization<BarrelModel> barrelModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<BarrelModel> barrelModelRandomSerialization = new RandomSerialization<>();
-                BarrelRepository barrelRepository = new BarrelRepository(barrelModelConsoleSerialization, barrelModelFileSerialization, barrelModelRandomSerialization);
-
                 Scanner barrelScanner = new Scanner(System.in);
                 System.out.println("Введите количество емкостей");
                 int barrelCount  = barrelScanner.nextInt();
@@ -241,11 +209,6 @@ public class MenuOperationPool {
 
         switch (currentDataObjectId){
             case 1:
-                final ConsoleSerialization<PersonModel> personModelConsoleSerialization = new ConsoleSerialization<>(PersonModel.class);
-                final FileSerialization<PersonModel> personModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<PersonModel> personModelRandomSerialization = new RandomSerialization<>();
-                PersonRepository personRepository = new PersonRepository(personModelConsoleSerialization, personModelFileSerialization, personModelRandomSerialization);
-
                 Scanner personScanner = new Scanner(System.in);
                 System.out.println("Введите количество людей");
                 int personCount = personScanner.nextInt();
@@ -265,11 +228,6 @@ public class MenuOperationPool {
                 break;
 
             case 2:
-                final ConsoleSerialization<AnimalModel> animalModelConsoleSerialization = new ConsoleSerialization<>(AnimalModel.class);
-                final FileSerialization<AnimalModel> animalModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<AnimalModel> animalModelRandomSerialization = new RandomSerialization<>();
-                AnimalRepository animalRepository = new AnimalRepository(animalModelConsoleSerialization, animalModelFileSerialization, animalModelRandomSerialization);
-
                 Scanner animalScanner = new Scanner(System.in);
                 System.out.println("Введите количество животных");
                 int animalCount  = animalScanner.nextInt();
@@ -291,11 +249,6 @@ public class MenuOperationPool {
                 break;
 
             case 3:
-                final ConsoleSerialization<BarrelModel> barrelModelConsoleSerialization = new ConsoleSerialization<>(BarrelModel.class);
-                final FileSerialization<BarrelModel> barrelModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<BarrelModel> barrelModelRandomSerialization = new RandomSerialization<>();
-                BarrelRepository barrelRepository = new BarrelRepository(barrelModelConsoleSerialization, barrelModelFileSerialization, barrelModelRandomSerialization);
-
                 Scanner barrelScanner = new Scanner(System.in);
                 System.out.println("Введите количество емкостей");
                 int barrelCount  = barrelScanner.nextInt();
@@ -321,12 +274,6 @@ public class MenuOperationPool {
 
         switch (currentDataObjectId){
             case 1:
-                final ConsoleSerialization<PersonModel> personModelConsoleSerialization = new ConsoleSerialization<>(PersonModel.class);
-                final FileSerialization<PersonModel> personModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<PersonModel> personModelRandomSerialization = new RandomSerialization<>();
-                PersonRepository personRepository = new PersonRepository(personModelConsoleSerialization, personModelFileSerialization, personModelRandomSerialization);
-
-
                 Scanner personScanner = new Scanner(System.in);
                 System.out.println("Введите количество людей");
                 int personCount = personScanner.nextInt();
@@ -336,24 +283,14 @@ public class MenuOperationPool {
 
                 break;
             case 2:
-                final ConsoleSerialization<AnimalModel> animalModelConsoleSerialization = new ConsoleSerialization<>(AnimalModel.class);
-                final FileSerialization<AnimalModel> animalModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<AnimalModel> animalModelRandomSerialization = new RandomSerialization<>();
-                AnimalRepository animalRepository = new AnimalRepository(animalModelConsoleSerialization, animalModelFileSerialization, animalModelRandomSerialization);
-
                 Scanner animalScanner = new Scanner(System.in);
                 System.out.println("Введите количество животных");
                 int animalCount  = animalScanner.nextInt();
-                System.out.println("Попробуйте позже");;
+                System.out.println("Попробуйте позже");
                 animalRepository.getAllAnimals();
 
                 break;
             case 3:
-                final ConsoleSerialization<BarrelModel> barrelModelConsoleSerialization = new ConsoleSerialization<>(BarrelModel.class);
-                final FileSerialization<BarrelModel> barrelModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<BarrelModel> barrelModelRandomSerialization = new RandomSerialization<>();
-                BarrelRepository barrelRepository = new BarrelRepository(barrelModelConsoleSerialization, barrelModelFileSerialization, barrelModelRandomSerialization);
-
                 Scanner barrelScanner = new Scanner(System.in);
                 System.out.println("Введите количество емкостей");
                 int barrelCount = barrelScanner.nextInt();
@@ -370,34 +307,18 @@ public class MenuOperationPool {
 
         switch (currentDataObjectId){
             case 1:
-                final ConsoleSerialization<PersonModel> personModelConsoleSerialization = new ConsoleSerialization<>(PersonModel.class);
-                final FileSerialization<PersonModel> personModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<PersonModel> personModelRandomSerialization = new RandomSerialization<>();
-                PersonRepository personRepository = new PersonRepository(personModelConsoleSerialization, personModelFileSerialization, personModelRandomSerialization);
-
-
                 personRepository.getPersonsFromFile();
                 personRepository.sortedPersonList();
                 personRepository.getAllPerson();
 
                 break;
             case 2:
-                final ConsoleSerialization<AnimalModel> animalModelConsoleSerialization = new ConsoleSerialization<>(AnimalModel.class);
-                final FileSerialization<AnimalModel> animalModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<AnimalModel> animalModelRandomSerialization = new RandomSerialization<>();
-                AnimalRepository animalRepository = new AnimalRepository(animalModelConsoleSerialization, animalModelFileSerialization, animalModelRandomSerialization);
-
                 animalRepository.getAllAnimals();
                 animalRepository.sortedAnimalList();
                 animalRepository.getAllAnimals();
 
                 break;
             case 3:
-                final ConsoleSerialization<BarrelModel> barrelModelConsoleSerialization = new ConsoleSerialization<>(BarrelModel.class);
-                final FileSerialization<BarrelModel> barrelModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<BarrelModel> barrelModelRandomSerialization = new RandomSerialization<>();
-                BarrelRepository barrelRepository = new BarrelRepository(barrelModelConsoleSerialization, barrelModelFileSerialization, barrelModelRandomSerialization);
-
                 barrelRepository.getBarrelsFromFile();
                 barrelRepository.sortedBarrelList();
                 barrelRepository.getAllBarrels();
@@ -411,11 +332,6 @@ public class MenuOperationPool {
 
         switch (currentDataObjectId){
             case 1:
-                final ConsoleSerialization<PersonModel> personModelConsoleSerialization = new ConsoleSerialization<>(PersonModel.class);
-                final FileSerialization<PersonModel> personModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<PersonModel> personModelRandomSerialization = new RandomSerialization<>();
-                PersonRepository personRepository = new PersonRepository(personModelConsoleSerialization, personModelFileSerialization, personModelRandomSerialization);
-
                 personRepository.getPersonsFromFile();
                 personRepository.sortedPersonList();
                 personRepository.getAllPerson();
@@ -433,11 +349,6 @@ public class MenuOperationPool {
                 break;
 
             case 2:
-                final ConsoleSerialization<AnimalModel> animalModelConsoleSerialization = new ConsoleSerialization<>(AnimalModel.class);
-                final FileSerialization<AnimalModel> animalModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<AnimalModel> animalModelRandomSerialization = new RandomSerialization<>();
-                AnimalRepository animalRepository = new AnimalRepository(animalModelConsoleSerialization, animalModelFileSerialization, animalModelRandomSerialization);
-
                 animalRepository.getAnimalsFromFile();
                 animalRepository.sortedAnimalList();
                 animalRepository.getAllAnimals();
@@ -456,11 +367,6 @@ public class MenuOperationPool {
                 break;
 
             case 3:
-                final ConsoleSerialization<BarrelModel> barrelModelConsoleSerialization = new ConsoleSerialization<>(BarrelModel.class);
-                final FileSerialization<BarrelModel> barrelModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<BarrelModel> barrelModelRandomSerialization = new RandomSerialization<>();
-                BarrelRepository barrelRepository = new BarrelRepository(barrelModelConsoleSerialization, barrelModelFileSerialization, barrelModelRandomSerialization);
-
                 Scanner barrelScanner = new Scanner(System.in);
 
                 barrelRepository.getBarrelsFromFile();
@@ -485,11 +391,6 @@ public class MenuOperationPool {
 
         switch (currentDataObjectId){
             case 1:
-                final ConsoleSerialization<PersonModel> personModelConsoleSerialization = new ConsoleSerialization<>(PersonModel.class);
-                final FileSerialization<PersonModel> personModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<PersonModel> personModelRandomSerialization = new RandomSerialization<>();
-                PersonRepository personRepository = new PersonRepository(personModelConsoleSerialization, personModelFileSerialization, personModelRandomSerialization);
-
 
                 personRepository.getPersonsFromFile();
                 personRepository.sortedPersonList();
@@ -497,11 +398,6 @@ public class MenuOperationPool {
 
                 break;
             case 2:
-                final ConsoleSerialization<AnimalModel> animalModelConsoleSerialization = new ConsoleSerialization<>(AnimalModel.class);
-                final FileSerialization<AnimalModel> animalModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<AnimalModel> animalModelRandomSerialization = new RandomSerialization<>();
-                AnimalRepository animalRepository = new AnimalRepository(animalModelConsoleSerialization, animalModelFileSerialization, animalModelRandomSerialization);
-
                 animalRepository.getAllAnimals();
                 System.out.println("Попробуйте позже");
 //                animalRepository.sortedAnimalList();
@@ -509,11 +405,6 @@ public class MenuOperationPool {
 
                 break;
             case 3:
-                final ConsoleSerialization<BarrelModel> barrelModelConsoleSerialization = new ConsoleSerialization<>(BarrelModel.class);
-                final FileSerialization<BarrelModel> barrelModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<BarrelModel> barrelModelRandomSerialization = new RandomSerialization<>();
-                BarrelRepository barrelRepository = new BarrelRepository(barrelModelConsoleSerialization, barrelModelFileSerialization, barrelModelRandomSerialization);
-
                 barrelRepository.getBarrelsFromFile();
                 barrelRepository.specialSortedBarrelList();
                 barrelRepository.getAllBarrels();
