@@ -3,7 +3,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import service.BinarySearchService;
-import service.Comparators;
+import service.comparators.AnimalComparator;
 import service.sorting.InsertionSort;
 import service.sorting.SortingService;
 import java.util.ArrayList;

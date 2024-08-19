@@ -4,7 +4,9 @@ import entity.PersonModel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import service.Comparators;
+import service.comparators.AnimalComparator;
+import service.comparators.BarrelComparator;
+import service.comparators.PersonComparator;
 import service.sorting.InsertionSort;
 import service.sorting.SortingService;
 import service.sorting.SpecialSort;
@@ -23,6 +25,7 @@ public class SortingServiceTest {
     public void setUp() {
 
         comparator = barrelComparator.getComparator();
+
 
         barrelList = new ArrayList<>();
         barrelList.add(new BarrelModel("Water", "Wood", 50.0)); // четный
@@ -73,7 +76,7 @@ public class SortingServiceTest {
                 new AnimalModel("Lion", "Yellow", true),
         };
 
-        sortingService.sort(animalModelList, Comparators.animalComparator());
+        sortingService.sort(animalModelList, animalComparator.getComparator());
 
         Assert.assertArrayEquals(animalModelsExpected, animalModelList.toArray(new AnimalModel[0]));
     }
@@ -93,7 +96,7 @@ public class SortingServiceTest {
                 new PersonModel("Ivanova", "Female", 22),
         };
 
-        sortingService.sort(personModelList, Comparators.personComparator());
+        sortingService.sort(personModelList, personComparator.getComparator());
 
         Assert.assertArrayEquals(personModelsExpected, personModelList.toArray(new PersonModel[0]));
     }
@@ -112,7 +115,7 @@ public class SortingServiceTest {
                 new BarrelModel("Oil", "Steel", 3.0),
         };
 
-        sortingService.sort(barrelModelList, Comparators.barrelComparator());
+        sortingService.sort(barrelModelList, barrelComparator.getComparator());
 
         Assert.assertArrayEquals(barrelModelsExpected, barrelModelList.toArray(new BarrelModel[0]));
     }
@@ -122,7 +125,7 @@ public class SortingServiceTest {
         SortingService<BarrelModel> sortingService = new SortingService<>(new SpecialSort<>(BarrelModel::getVolume));
 
         // Преобразование значения double в int для проверки четности
-        sortingService.sort(barrelList, Comparators.barrelComparator());
+        sortingService.sort(barrelList, barrelComparator.getComparator());
 
         List<BarrelModel> expected = new ArrayList<>();
         expected.add(new BarrelModel("Juice", "Plastic", 20.0)); // четный
