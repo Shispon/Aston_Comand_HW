@@ -1,13 +1,13 @@
 package repository;
 
 import entity.AnimalModel;
-import service.BinarySearchService;
-import service.Comparators;
-import service.SortingService;
+import service.*;
 import service.serialization.ConsoleSerialization;
 import service.serialization.FileSerialization;
 import service.serialization.RandomSerialization;
 import service.serialization.ValidationException;
+import service.sorting.InsertionSort;
+import service.sorting.SortingLogic;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ public class AnimalRepository {
     private final ConsoleSerialization<AnimalModel> consoleSerialization;
     private final FileSerialization<AnimalModel> fileSerialization;
     private final RandomSerialization<AnimalModel> randomSerialization;
+    private SortingLogic<AnimalModel> sortingLogic;  // Поле для хранения текущей сортировки
 
     /**
      * Конструктор класса {@code AnimalRepository}.
@@ -41,10 +42,20 @@ public class AnimalRepository {
     }
 
     /**
+     * Устанавливает алгоритм сортировки.
+     *
+     * @param sortingLogic новый алгоритм сортировки
+     */
+    public void setSortingLogic(SortingLogic<AnimalModel> sortingLogic) {
+        this.sortingLogic = sortingLogic;
+    }
+
+    /**
      * Сортирует список {@link AnimalModel} с использованием стандартной сортировки.
      */
     public void sortedAnimalList() {
-        SortingService.insertionSort(animalList, Comparators.animalComparator());
+        setSortingLogic(new InsertionSort<>());
+        sortingLogic.sort(animalList, Comparators.animalComparator());
     }
 
     /**

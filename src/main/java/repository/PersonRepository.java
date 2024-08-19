@@ -1,13 +1,15 @@
 package repository;
 
 import entity.PersonModel;
-import service.BinarySearchService;
-import service.Comparators;
-import service.SortingService;
+import service.*;
 import service.serialization.ConsoleSerialization;
 import service.serialization.FileSerialization;
 import service.serialization.RandomSerialization;
 import service.serialization.ValidationException;
+import service.sorting.InsertionSort;
+import service.sorting.NumericExtractor;
+import service.sorting.SortingLogic;
+import service.sorting.SpecialSort;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class PersonRepository {
     private final ConsoleSerialization<PersonModel> consoleSerialization;
     private final FileSerialization<PersonModel> fileSerialization;
     private final RandomSerialization<PersonModel> randomSerialization;
+    private SortingLogic<PersonModel> sortingLogic;  // Поле для хранения текущей сортировки
 
     /**
      * Конструктор класса {@code PersonRepository}.
@@ -41,10 +44,20 @@ public class PersonRepository {
     }
 
     /**
+     * Устанавливает алгоритм сортировки.
+     *
+     * @param sortingLogic новый алгоритм сортировки
+     */
+    public void setSortingLogic(SortingLogic<PersonModel> sortingLogic) {
+        this.sortingLogic = sortingLogic;
+    }
+
+    /**
      * Сортирует список людей с использованием стандартной сортировки.
      */
     public void sortedPersonList() {
-        SortingService.insertionSort(personList, Comparators.personComparator());
+        setSortingLogic(new InsertionSort<>());
+        sortingLogic.sort(personList, Comparators.personComparator());
     }
 
     /**
@@ -52,7 +65,9 @@ public class PersonRepository {
      * возраст которых является четным, а затем возвращаются в их исходные позиции.
      */
     public void specialSortedPersonList() {
-        SortingService.specialSort(personList, Comparators.personComparator(), PersonModel::getAge);
+        NumericExtractor<PersonModel> extractor = PersonModel::getAge;
+        setSortingLogic(new SpecialSort<>(extractor));
+        sortingLogic.sort(personList, Comparators.personComparator());
     }
 
     /**
