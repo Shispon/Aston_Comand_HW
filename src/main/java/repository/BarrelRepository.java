@@ -75,15 +75,15 @@ public class BarrelRepository {
         BarrelModel barrel = new BarrelModel();
 
         try {
-            System.out.print("Enter stored material: ");
+            System.out.print("Введите материал хранилища: ");
             String storedMaterial = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(barrel, "storedMaterial", storedMaterial);
 
-            System.out.print("Enter material: ");
+            System.out.print("Введите хранимый материал: ");
             String material = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(barrel, "material", material);
 
-            System.out.print("Enter volume: ");
+            System.out.print("Введите объем хранилища: ");
             String volume = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(barrel, "volume", volume);
 

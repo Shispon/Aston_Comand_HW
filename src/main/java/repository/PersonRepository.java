@@ -75,15 +75,15 @@ public class PersonRepository {
         PersonModel person = new PersonModel();
 
         try {
-            System.out.print("Enter last name: ");
+            System.out.print("Введите фамилию: ");
             String lastName = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(person, "lastName", lastName);
 
-            System.out.print("Enter gender: ");
+            System.out.print("Введите пол: ");
             String gender = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(person, "gender", gender);
 
-            System.out.print("Enter age: ");
+            System.out.print("Введите возраст: ");
             String age = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(person, "age", age);
 

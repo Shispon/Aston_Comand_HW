@@ -8,7 +8,7 @@ public class BinarySearchService {
     public static <T> T search(List<T> list, T key, Comparator<? super T> comparator) {
         // Проверка, отсортирован ли список
         if (!isSorted(list, comparator)) {
-            throw new IllegalArgumentException("The list is not sorted according to the comparator.");
+            throw new IllegalArgumentException("Данный список не отсортирован.");
         }
 
         int low = 0;
@@ -33,9 +33,9 @@ public class BinarySearchService {
     private static <T> boolean isSorted(List<T> list, Comparator<? super T> comparator) {
         for (int i = 1; i < list.size(); i++) {
             if (comparator.compare(list.get(i - 1), list.get(i)) > 0) {
-                return false; // Найдено несоответствие, список не отсортирован
+                return false;
             }
         }
-        return true; // Список отсортирован
+        return true;
     }
 }

@@ -13,7 +13,7 @@ public class Menu {
             System.out.println("0. Выход");
 
             int choice = scanner.nextInt();
-            scanner.nextLine();  // Потребуется для следующего ввода строки
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:

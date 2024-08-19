@@ -19,7 +19,6 @@ public class MenuOperationPool {
     private static final BarrelRepository barrelRepository;
 
     static {
-        // Инициализация репозиториев с необходимыми сериализаторами
         personRepository = new PersonRepository(
                 new ConsoleSerialization<>(PersonModel.class),
                 new FileSerialization<>(),
@@ -48,7 +47,7 @@ public class MenuOperationPool {
             System.out.println("0. Назад");
 
             int action = scanner.nextInt();
-            scanner.nextLine();  // Потребуется для следующего ввода строки
+            scanner.nextLine();
 
             switch (action) {
                 case 1:
@@ -81,7 +80,7 @@ public class MenuOperationPool {
             System.out.println("0. Назад");
 
             int method = scanner.nextInt();
-            scanner.nextLine();  // Потребуется для следующего ввода строки
+            scanner.nextLine();
 
             switch (method) {
                 case 1:
@@ -116,7 +115,7 @@ public class MenuOperationPool {
             System.out.println("0. Назад");
 
             int method = scanner.nextInt();
-            scanner.nextLine();  // Потребуется для следующего ввода строки
+            scanner.nextLine();
 
             switch (method) {
                 case 1:
@@ -141,7 +140,7 @@ public class MenuOperationPool {
         String gender = scanner.nextLine();
         System.out.println("Введите возраст:");
         int age = scanner.nextInt();
-        scanner.nextLine();  // Потребуется для следующего ввода строки
+        scanner.nextLine();
 
         System.out.println(personRepository.searchPerson(PersonModel.builder().lastName(lastname).gender(gender).age(age).build()));
     }
@@ -157,7 +156,7 @@ public class MenuOperationPool {
             System.out.println("0. Назад");
 
             int action = scanner.nextInt();
-            scanner.nextLine();  // Потребуется для следующего ввода строки
+            scanner.nextLine();
 
             switch (action) {
                 case 1:
@@ -190,7 +189,7 @@ public class MenuOperationPool {
             System.out.println("0. Назад");
 
             int method = scanner.nextInt();
-            scanner.nextLine();  // Потребуется для следующего ввода строки
+            scanner.nextLine();
 
             switch (method) {
                 case 1:
@@ -224,7 +223,7 @@ public class MenuOperationPool {
             System.out.println("0. Назад");
 
             int method = scanner.nextInt();
-            scanner.nextLine();  // Потребуется для следующего ввода строки
+            scanner.nextLine();
 
             switch (method) {
                 case 1:
@@ -246,7 +245,7 @@ public class MenuOperationPool {
         String eyecolor = scanner.nextLine();
         System.out.println("Введите наличие шерсти:");
         boolean hasFur = scanner.nextBoolean();
-        scanner.nextLine();  // Потребуется для следующего ввода строки
+        scanner.nextLine();
 
         System.out.println(animalRepository.searchAnimal(AnimalModel.builder().species(species).eyeColor(eyecolor).hasFur(hasFur).build()));
     }
@@ -262,7 +261,7 @@ public class MenuOperationPool {
             System.out.println("0. Назад");
 
             int action = scanner.nextInt();
-            scanner.nextLine();  // Потребуется для следующего ввода строки
+            scanner.nextLine();
 
             switch (action) {
                 case 1:
@@ -295,7 +294,7 @@ public class MenuOperationPool {
             System.out.println("0. Назад");
 
             int method = scanner.nextInt();
-            scanner.nextLine();  // Потребуется для следующего ввода строки
+            scanner.nextLine();
 
             switch (method) {
                 case 1:
@@ -330,7 +329,7 @@ public class MenuOperationPool {
             System.out.println("0. Назад");
 
             int method = scanner.nextInt();
-            scanner.nextLine();  // Потребуется для следующего ввода строки
+            scanner.nextLine();
 
             switch (method) {
                 case 1:
@@ -355,7 +354,7 @@ public class MenuOperationPool {
         String material = scanner.nextLine();
         System.out.println("Введите размер:");
         double size = scanner.nextDouble();
-        scanner.nextLine();  // Потребуется для следующего ввода строки
+        scanner.nextLine();
 
         System.out.println(barrelRepository.searchBarrel(BarrelModel.builder().storedMaterial(type).material(material).volume(size).build()));
     }
