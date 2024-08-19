@@ -1,8 +1,7 @@
-import display.ConsoleMenu;
+import display.Menu;
 
 public class Main {
     public static void main(String[] args) {
-        ConsoleMenu startMenu = new ConsoleMenu();
-        startMenu.start();
+        Menu.displayMainMenu();
     }
 }
