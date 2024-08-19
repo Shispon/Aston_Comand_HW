@@ -4,11 +4,10 @@ import entity.PersonModel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import service.SortingService;
-import service.comparators.AnimalComparator;
-import service.comparators.BarrelComparator;
-import service.comparators.PersonComparator;
-
+import service.Comparators;
+import service.sorting.InsertionSort;
+import service.sorting.SortingService;
+import service.sorting.SpecialSort;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -62,6 +61,7 @@ public class SortingServiceTest {
     @Test
     public void insertionSortForAnimal() {
         List<AnimalModel> animalModelList = new ArrayList<>(List.of(animalModels));
+        SortingService<AnimalModel> sortingService = new SortingService<>(new InsertionSort<>());
 
         // Ожидаемый результат после сортировки: сначала по species, затем по eyeColor, затем по hasFur
         AnimalModel[] animalModelsExpected = {
@@ -73,7 +73,7 @@ public class SortingServiceTest {
                 new AnimalModel("Lion", "Yellow", true),
         };
 
-        SortingService.insertionSort(animalModelList, animalComparator.getComparator());
+        sortingService.sort(animalModelList, Comparators.animalComparator());
 
         Assert.assertArrayEquals(animalModelsExpected, animalModelList.toArray(new AnimalModel[0]));
     }
@@ -81,6 +81,7 @@ public class SortingServiceTest {
     @Test
     public void insertionSortForPerson() {
         List<PersonModel> personModelList = new ArrayList<>(List.of(personModels));
+        SortingService<PersonModel> sortingService = new SortingService<>(new InsertionSort<>());
 
         // Ожидаемый результат после сортировки: сначала по lastName, затем по gender, затем по age
         PersonModel[] personModelsExpected = {
@@ -92,7 +93,7 @@ public class SortingServiceTest {
                 new PersonModel("Ivanova", "Female", 22),
         };
 
-        SortingService.insertionSort(personModelList, personComparator.getComparator());
+        sortingService.sort(personModelList, Comparators.personComparator());
 
         Assert.assertArrayEquals(personModelsExpected, personModelList.toArray(new PersonModel[0]));
     }
@@ -100,6 +101,7 @@ public class SortingServiceTest {
     @Test
     public void insertionSortForBarrel() {
         List<BarrelModel> barrelModelList = new ArrayList<>(List.of(barrelModels));
+        SortingService<BarrelModel> sortingService = new SortingService<>(new InsertionSort<>());
 
         // Ожидаемый результат после сортировки: сначала по объему в порядке возрастания
         BarrelModel[] barrelModelsExpected = {
@@ -110,15 +112,17 @@ public class SortingServiceTest {
                 new BarrelModel("Oil", "Steel", 3.0),
         };
 
-        SortingService.insertionSort(barrelModelList, barrelComparator.getComparator());
+        sortingService.sort(barrelModelList, Comparators.barrelComparator());
 
         Assert.assertArrayEquals(barrelModelsExpected, barrelModelList.toArray(new BarrelModel[0]));
     }
 
     @Test
     public void testSpecialSort() {
+        SortingService<BarrelModel> sortingService = new SortingService<>(new SpecialSort<>(BarrelModel::getVolume));
+
         // Преобразование значения double в int для проверки четности
-        SortingService.specialSort(barrelList, comparator, barrel -> (int) barrel.getVolume());
+        sortingService.sort(barrelList, Comparators.barrelComparator());
 
         List<BarrelModel> expected = new ArrayList<>();
         expected.add(new BarrelModel("Juice", "Plastic", 20.0)); // четный

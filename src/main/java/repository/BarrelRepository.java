@@ -1,13 +1,15 @@
 package repository;
 
 import entity.BarrelModel;
-import service.BinarySearchService;
-import service.SortingService;
-import service.comparators.BarrelComparator;
+import service.*;
 import service.serialization.ConsoleSerialization;
 import service.serialization.FileSerialization;
 import service.serialization.RandomSerialization;
 import service.serialization.ValidationException;
+import service.sorting.InsertionSort;
+import service.sorting.NumericExtractor;
+import service.sorting.SortingLogic;
+import service.sorting.SpecialSort;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ public class BarrelRepository implements Repository<BarrelModel> {
     private final ConsoleSerialization<BarrelModel> consoleSerialization;
     private final FileSerialization<BarrelModel> fileSerialization;
     private final RandomSerialization<BarrelModel> randomSerialization;
+    private SortingLogic<BarrelModel> sortingLogic;  // Поле для хранения текущей сортировки
     private final BarrelComparator barrelComparator;
 
     /**
@@ -44,18 +47,30 @@ public class BarrelRepository implements Repository<BarrelModel> {
     }
 
     /**
+     * Устанавливает алгоритм сортировки.
+     *
+     * @param sortingLogic новый алгоритм сортировки
+     */
+    public void setSortingLogic(SortingLogic<BarrelModel> sortingLogic) {
+        this.sortingLogic = sortingLogic;
+    }
+
+
+    /**
      * Сортирует список баррелей с использованием стандартной сортировки.
      */
-    @Override
-    public void sortedList(){
-        SortingService.insertionSort(barrelList, barrelComparator.getComparator());
+    public void sortedBarrelList() {
+        setSortingLogic(new InsertionSort<>());
+        sortingLogic.sort(barrelList, Comparators.barrelComparator());
     }
     /**
      * Специально сортирует список баррелей, где сортируются только те баррели,
      * объем которых является четным, а затем возвращаются в их исходные позиции.
      */
-    public void specialSortedList () {
-        SortingService.specialSort(barrelList, barrelComparator.getComparator(), barrel -> (int) barrel.getVolume());
+    public void specialSortedBarrelList() {
+        NumericExtractor<BarrelModel> extractor = barrel -> (int) barrel.getVolume();
+        setSortingLogic(new SpecialSort<>(extractor));
+        sortingLogic.sort(barrelList, Comparators.barrelComparator());
     }
 
     /**

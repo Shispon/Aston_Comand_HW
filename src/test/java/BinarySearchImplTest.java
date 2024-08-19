@@ -3,9 +3,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import service.BinarySearchService;
-import service.SortingService;
-import service.comparators.AnimalComparator;
-
+import service.Comparators;
+import service.sorting.InsertionSort;
+import service.sorting.SortingService;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -25,7 +25,10 @@ public class BinarySearchImplTest {
         list.add(new AnimalModel("cat", "gray", false));
         list.add(new AnimalModel("spider", "black", false));
         list.add(new AnimalModel("bird", "blue", false));
-        SortingService.insertionSort(list, comparator);
+
+        SortingService<AnimalModel> sortingService = new SortingService<>(new InsertionSort<>());
+        sortingService.sort(list, comparator);
+
         sortedList = list;
     }
 

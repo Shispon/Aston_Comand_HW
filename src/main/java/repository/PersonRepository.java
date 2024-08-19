@@ -1,13 +1,15 @@
 package repository;
 
 import entity.PersonModel;
-import service.BinarySearchService;
-import service.SortingService;
-import service.comparators.PersonComparator;
+import service.*;
 import service.serialization.ConsoleSerialization;
 import service.serialization.FileSerialization;
 import service.serialization.RandomSerialization;
 import service.serialization.ValidationException;
+import service.sorting.InsertionSort;
+import service.sorting.NumericExtractor;
+import service.sorting.SortingLogic;
+import service.sorting.SpecialSort;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -20,8 +22,9 @@ public class PersonRepository implements Repository<PersonModel> {
     private final ConsoleSerialization<PersonModel> consoleSerialization;
     private final FileSerialization<PersonModel> fileSerialization;
     private final RandomSerialization<PersonModel> randomSerialization;
+    private SortingLogic<PersonModel> sortingLogic;  // Поле для хранения текущей сортировки
     private final PersonComparator personComparator;
-
+  
     public PersonRepository(ConsoleSerialization<PersonModel> consoleSerialization,
                             FileSerialization<PersonModel> fileSerialization,
                             RandomSerialization<PersonModel> randomSerialization,
@@ -32,12 +35,31 @@ public class PersonRepository implements Repository<PersonModel> {
         this.personComparator = personComparator;
     }
 
-    @Override
-    public void sortedList() {
-        SortingService.insertionSort(personList, personComparator.getComparator());
+    /**
+     * Устанавливает алгоритм сортировки.
+     *
+     * @param sortingLogic новый алгоритм сортировки
+     */
+    public void setSortingLogic(SortingLogic<PersonModel> sortingLogic) {
+        this.sortingLogic = sortingLogic;
     }
-    public void specialSortedList() {
-        SortingService.specialSort(personList, personComparator.getComparator(),PersonModel::getAge);
+
+    /**
+     * Сортирует список людей с использованием стандартной сортировки.
+     */
+    public void sortedPersonList() {
+        setSortingLogic(new InsertionSort<>());
+        sortingLogic.sort(personList, Comparators.personComparator());
+    }
+
+    /**
+     * Специально сортирует список людей, где сортируются только те люди,
+     * возраст которых является четным, а затем возвращаются в их исходные позиции.
+     */
+    public void specialSortedPersonList() {
+        NumericExtractor<PersonModel> extractor = PersonModel::getAge;
+        setSortingLogic(new SpecialSort<>(extractor));
+        sortingLogic.sort(personList, Comparators.personComparator());
     }
 
     @Override
