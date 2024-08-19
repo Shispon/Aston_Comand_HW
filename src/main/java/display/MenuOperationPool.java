@@ -52,10 +52,6 @@ public class MenuOperationPool {
                 }
                 break;
             case 3:
-                final ConsoleSerialization<BarrelModel> barrelModelConsoleSerialization = new ConsoleSerialization<>(BarrelModel.class);
-                final FileSerialization<BarrelModel> barrelModelFileSerialization = new FileSerialization<>();
-                final RandomSerialization<BarrelModel> barrelModelRandomSerialization = new RandomSerialization<>();
-                BarrelRepository barrelRepository = new BarrelRepository(barrelModelConsoleSerialization, barrelModelFileSerialization, barrelModelRandomSerialization);
                 try {
                     barrelRepository.addBarrelByConsole();
                     barrelRepository.sortedBarrelList();
