@@ -2,6 +2,7 @@ package repository;
 
 import entity.AnimalModel;
 import service.*;
+import service.comparators.AnimalComparator;
 import service.serialization.ConsoleSerialization;
 import service.serialization.FileSerialization;
 import service.serialization.RandomSerialization;
@@ -45,9 +46,10 @@ public class AnimalRepository implements Repository<AnimalModel> {
     /**
      * Сортирует список {@link AnimalModel} с использованием стандартной сортировки.
      */
-    public void sortedAnimalList() {
+    @Override
+    public void sortedList() {
         setSortingLogic(new InsertionSort<>());
-        sortingLogic.sort(animalList, Comparators.animalComparator());
+        sortingLogic.sort(animalList, animalComparator.getComparator());
     }
 
     @Override
@@ -61,15 +63,15 @@ public class AnimalRepository implements Repository<AnimalModel> {
         AnimalModel animal = new AnimalModel();
 
         try {
-            System.out.print("Enter species: ");
+            System.out.print("Введите вид: ");
             String species = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(animal, "species", species);
 
-            System.out.print("Enter eye color: ");
+            System.out.print("Введите цвет глаз: ");
             String eyeColor = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(animal, "eyeColor", eyeColor);
 
-            System.out.print("Has fur (true/false): ");
+            System.out.print("Есть ли шерсть (true/false): ");
             String hasFur = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(animal, "hasFur", hasFur);
 

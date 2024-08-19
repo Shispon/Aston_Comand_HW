@@ -2,6 +2,7 @@ package repository;
 
 import entity.BarrelModel;
 import service.*;
+import service.comparators.BarrelComparator;
 import service.serialization.ConsoleSerialization;
 import service.serialization.FileSerialization;
 import service.serialization.RandomSerialization;
@@ -61,7 +62,7 @@ public class BarrelRepository implements Repository<BarrelModel> {
      */
     public void sortedBarrelList() {
         setSortingLogic(new InsertionSort<>());
-        sortingLogic.sort(barrelList, Comparators.barrelComparator());
+        sortingLogic.sort(barrelList, barrelComparator.getComparator());
     }
     /**
      * Специально сортирует список баррелей, где сортируются только те баррели,
@@ -70,7 +71,13 @@ public class BarrelRepository implements Repository<BarrelModel> {
     public void specialSortedBarrelList() {
         NumericExtractor<BarrelModel> extractor = barrel -> (int) barrel.getVolume();
         setSortingLogic(new SpecialSort<>(extractor));
-        sortingLogic.sort(barrelList, Comparators.barrelComparator());
+        sortingLogic.sort(barrelList,barrelComparator.getComparator());
+    }
+
+    @Override
+    public void sortedList() {
+        setSortingLogic(new InsertionSort<>());
+        sortingLogic.sort(barrelList, barrelComparator.getComparator());
     }
 
     /**
@@ -95,15 +102,15 @@ public class BarrelRepository implements Repository<BarrelModel> {
         BarrelModel barrel = new BarrelModel();
 
         try {
-            System.out.print("Enter stored material: ");
+            System.out.print("Введите материал хранилища: ");
             String storedMaterial = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(barrel, "storedMaterial", storedMaterial);
 
-            System.out.print("Enter material: ");
+            System.out.print("Введите ханимый материал: ");
             String material = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(barrel, "material", material);
 
-            System.out.print("Enter volume: ");
+            System.out.print("Введите объем: ");
             String volume = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(barrel, "volume", volume);
 

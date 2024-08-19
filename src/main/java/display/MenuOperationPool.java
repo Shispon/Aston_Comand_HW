@@ -129,7 +129,7 @@ public class MenuOperationPool {
                     personRepository.sortedList();
                     break;
                 case 2:
-                    personRepository.specialSortedList();
+                    personRepository.specialSortedPersonList();
                     break;
                 case 0:
                     return;
@@ -343,7 +343,7 @@ public class MenuOperationPool {
                     barrelRepository.sortedList();
                     break;
                 case 2:
-                    barrelRepository.specialSortedList();
+                    barrelRepository.specialSortedBarrelList();
                     break;
                 case 0:
                     return;

@@ -2,6 +2,7 @@ package repository;
 
 import entity.PersonModel;
 import service.*;
+import service.comparators.PersonComparator;
 import service.serialization.ConsoleSerialization;
 import service.serialization.FileSerialization;
 import service.serialization.RandomSerialization;
@@ -44,22 +45,25 @@ public class PersonRepository implements Repository<PersonModel> {
         this.sortingLogic = sortingLogic;
     }
 
-    /**
-     * Сортирует список людей с использованием стандартной сортировки.
-     */
+
     public void sortedPersonList() {
         setSortingLogic(new InsertionSort<>());
-        sortingLogic.sort(personList, Comparators.personComparator());
+        sortingLogic.sort(personList, personComparator.getComparator());
     }
 
-    /**
-     * Специально сортирует список людей, где сортируются только те люди,
-     * возраст которых является четным, а затем возвращаются в их исходные позиции.
-     */
+
     public void specialSortedPersonList() {
         NumericExtractor<PersonModel> extractor = PersonModel::getAge;
         setSortingLogic(new SpecialSort<>(extractor));
-        sortingLogic.sort(personList, Comparators.personComparator());
+        sortingLogic.sort(personList, personComparator.getComparator());
+    }
+    /**
+     * Сортирует список людей с использованием стандартной сортировки.
+     */
+    @Override
+    public void sortedList() {
+        setSortingLogic(new InsertionSort<>());
+        sortingLogic.sort(personList, personComparator.getComparator());
     }
 
     @Override
@@ -73,15 +77,15 @@ public class PersonRepository implements Repository<PersonModel> {
         PersonModel person = new PersonModel();
 
         try {
-            System.out.print("Enter last name: ");
+            System.out.print("Введите фамилию: ");
             String lastName = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(person, "lastName", lastName);
 
-            System.out.print("Enter gender: ");
+            System.out.print("Введите пол: ");
             String gender = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(person, "gender", gender);
 
-            System.out.print("Enter age: ");
+            System.out.print("Введите возраст: ");
             String age = scanner.nextLine();
             consoleSerialization.SetObjectsProperty(person, "age", age);
 
